@@ -10,9 +10,15 @@ const MatchingContacts = (
     highlightedIndex,
     downshiftGetMenuProps,
     downshiftGetItemProps,
+    onSelectSearchItem
   },
 ) => {
   // TODO something is missing here
+
+  const onSelection = (e, item) => {
+    console.log('onSelection',item);
+    onSelectSearchItem(item);
+  }
 
   return (
     <ul
@@ -30,6 +36,7 @@ const MatchingContacts = (
               {
                 "MatchingContacts_item_highlighted": false,
               }),
+              onClick: (e) => onSelection(e,item)
           })}
         >
           {item.value}
@@ -47,6 +54,7 @@ MatchingContacts.propTypes = {
   highlightedIndex: PropTypes.number,
   downshiftGetMenuProps: PropTypes.func.isRequired,
   downshiftGetItemProps: PropTypes.func.isRequired,
+  onSelectSearchItem:PropTypes.func.isRequired
 };
 
 export default MatchingContacts;

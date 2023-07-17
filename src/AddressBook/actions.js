@@ -2,7 +2,7 @@ import { actions as searchActions } from "./SearchContacts";
 import { actions as contactDetailsActions } from "./ContactDetails";
 
 export const updateSearchPhrase = newPhrase =>
-  (dispatch, getState, { httpApi }) => {
+(dispatch, getState, { httpApi }) => {
     dispatch(
       searchActions.updateSearchPhraseStart({ newPhrase }),
     );
@@ -13,14 +13,18 @@ export const updateSearchPhrase = newPhrase =>
           value: contact.name,
         }));
         // TODO something is wrong here
+        console.log('matchingContacts',matchingContacts)
         dispatch(
-          searchActions.updateSearchPhraseSuccess({ matchingContacts: [] }),
+          searchActions.updateSearchPhraseSuccess({ matchingContacts }),
         );
       })
-      .catch(() => {
+      .catch((err) => {
         // TODO something is missing here
+        dispatch(
+          searchActions.updateSearchPhraseFailure(),
+        );
       });
-  };
+};
 
 export const selectMatchingContact = selectedMatchingContact =>
   (dispatch, getState, { httpApi, dataCache }) => {
@@ -28,7 +32,7 @@ export const selectMatchingContact = selectedMatchingContact =>
     // TODO something is missing here
     const getContactDetails = ({ id }) => {
       return httpApi
-          .getContact({ contactId: selectedMatchingContact.id })
+          .getContact({ contactId: id })
           .then(({ data }) => ({
             id: data.id,
             name: data.name,
@@ -45,15 +49,30 @@ export const selectMatchingContact = selectedMatchingContact =>
       contactDetailsActions.fetchContactDetailsStart(),
     );
 
+    const isDataAvailableInDataCache = dataCache.load({key: selectedMatchingContact.id}) || false;
+
+    if(isDataAvailableInDataCache) {
+      dispatch(
+        contactDetailsActions.fetchContactDetailsSuccess({
+          contactDetails: isDataAvailableInDataCache
+        })
+      )
+      return;
+    }
+
     getContactDetails({ id: selectedMatchingContact.id })
       .then((contactDetails) => {
+        console.log('api called')
         // TODO something is missing here
         dataCache.store({
-          key: contactDetails.id,
+          key: selectedMatchingContact.id,
+          value: contactDetails
         });
         // TODO something is wrong here
         dispatch(
-          contactDetailsActions.fetchContactDetailsFailure(),
+          contactDetailsActions.fetchContactDetailsSuccess({
+            contactDetails: contactDetails
+          }),
         );
       })
       .catch(() => {
@@ -61,4 +80,4 @@ export const selectMatchingContact = selectedMatchingContact =>
           contactDetailsActions.fetchContactDetailsFailure(),
         );
       });
-  };
+};

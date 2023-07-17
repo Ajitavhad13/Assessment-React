@@ -3,12 +3,13 @@ import PropTypes from "prop-types";
 
 import "./PhraseInput.css";
 
-class PhraseInput extends React.Component {
 
+
+class PhraseInput extends React.Component {
   static propTypes = {
     phrase: PropTypes.string.isRequired,
     onPhraseChange: PropTypes.func.isRequired,
-    downshiftGetInputProps: PropTypes.func.isRequired,
+    downshiftGetInputProps: PropTypes.func.isRequired
   };
 
   componentDidMount () {
@@ -19,7 +20,7 @@ class PhraseInput extends React.Component {
     const {
       phrase,
       onPhraseChange,
-      downshiftGetInputProps,
+      downshiftGetInputProps
     } = this.props;
 
     return (
@@ -30,7 +31,9 @@ class PhraseInput extends React.Component {
           ref: inputRef => this.inputRef = inputRef,
           placeholder: "To show contact's details, type its name…",
           value: phrase,
-          onChange: event => onPhraseChange("phrase"),
+          onChange: (event) =>{
+              onPhraseChange(event.target.value)
+          },
         })}
       />
     );

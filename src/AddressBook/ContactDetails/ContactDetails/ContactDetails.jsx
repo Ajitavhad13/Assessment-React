@@ -8,6 +8,7 @@ import Placeholder from "../Placeholder/Placeholder";
 import "./ContactDetails.css";
 
 const ContactDetails = ({ data, hasFailedToFetch }) => {
+  
   const { name, phone, addressLines } = (data || {});
 
   const wrapped = (node) => (

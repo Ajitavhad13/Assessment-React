@@ -1,14 +1,14 @@
 import {
-  SELECT_MATCHING_CONTACT,
   UPDATE_SEARCH_PHRASE__FAILURE,
   UPDATE_SEARCH_PHRASE__START,
   UPDATE_SEARCH_PHRASE__SUCCESS,
+  SELECT_MATCHING_CONTACT
 } from "./actions";
 
 const initialState = {
   phrase: "",
   matchingContacts: [],
-  searchFailure: false,
+  searchFailure: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -27,23 +27,23 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         matchingContacts: payload.matchingContacts,
+        searchFailure: false,
       };
 
     // TODO something is wrong here
     case UPDATE_SEARCH_PHRASE__FAILURE:
       return {
         ...state,
-        searchFailure: false,
+        searchFailure: true,
       };
 
     // TODO something is wrong here
     case SELECT_MATCHING_CONTACT:
       return {
         ...state,
-        phrase: payload.selectedMatchingContact.id,
-        matchingContacts: [],
+        phrase: payload.selectedMatchingContact.value,
+        matchingContacts: []
       };
-
     default:
       return state;
 

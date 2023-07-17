@@ -10,6 +10,7 @@ import SearchFailure from "./SearchFailure";
 
 import "./SearchContacts.css";
 
+
 class SearchContacts extends React.Component {
 
   static propTypes = {
@@ -31,6 +32,15 @@ class SearchContacts extends React.Component {
       onMatchingContactSelect,
       hasFailedToSearch,
     } = this.props;
+
+    const onSelectSearchItem = (item) => {
+      if(item) {
+        onMatchingContactSelect({
+          value: item.value,
+          id: item.id
+        })
+      }
+    }
 
     return (
       <section className="SearchContacts">
@@ -58,6 +68,7 @@ class SearchContacts extends React.Component {
                     highlightedIndex={highlightedIndex}
                     downshiftGetMenuProps={getMenuProps}
                     downshiftGetItemProps={getItemProps}
+                    onSelectSearchItem={onSelectSearchItem}
                   />
                 )}
             </div>
@@ -83,7 +94,7 @@ const mapReduxDispatchToProps = dispatch => ({
     (newPhrase) => dispatch(updateSearchPhrase(newPhrase)),
   // TODO something is wrong here
   onMatchingContactSelect:
-    (selectedMatchingContact) => dispatch(updateSearchPhrase(selectedMatchingContact.value)),
+    (selectedMatchingContact) => dispatch(selectMatchingContact(selectedMatchingContact)),
 });
 
 export default connect(

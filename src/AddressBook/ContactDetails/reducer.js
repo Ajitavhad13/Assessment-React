@@ -19,18 +19,21 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         fetchedContact: null,
+        fetchFailure: false
       };
 
     // TODO something is wrong here
     case FETCH_CONTACT_DETAILS__SUCCESS:
       return {
         ...state,
-        fetchedContact: null,
+        fetchedContact: payload.contactDetails,
+        fetchFailure: false
       };
 
     case FETCH_CONTACT_DETAILS__FAILURE:
       return {
         ...state,
+        fetchedContact: null,
         fetchFailure: true,
       };
 
