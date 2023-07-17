@@ -8,7 +8,7 @@ import {
 
 const mockContacts = require('./contacts.json');
 
-const SEARCH_REQUEST_MIN_INTERVAL_IN_MILLIS = 300;
+const SEARCH_REQUEST_MIN_INTERVAL_IN_MILLIS = 1000;
 
 const fakeResponse = ({ status, data, maxLatencyInMillis }) => {
   const latency = Math.round(Math.random() * maxLatencyInMillis);

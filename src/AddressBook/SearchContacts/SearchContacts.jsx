@@ -22,6 +22,7 @@ class SearchContacts extends React.Component {
     })).isRequired,
     onMatchingContactSelect: PropTypes.func.isRequired,
     hasFailedToSearch: PropTypes.bool.isRequired,
+    selectedContact: PropTypes.shape()
   };
 
   render () {
@@ -31,9 +32,13 @@ class SearchContacts extends React.Component {
       matchingContacts,
       onMatchingContactSelect,
       hasFailedToSearch,
+      selectedContact
     } = this.props;
 
+    
+
     const onSelectSearchItem = (item) => {
+      if(item && selectedContact && selectedContact.id === item.id) return;
       if(item) {
         onMatchingContactSelect({
           value: item.value,
@@ -46,7 +51,7 @@ class SearchContacts extends React.Component {
       <section className="SearchContacts">
         <Downshift
           itemToString={item => (item ? item.value : "")}
-          onChange={item => onMatchingContactSelect(item)}
+          onChange={item => onSelectSearchItem(item)}
         >
           {({
               isOpen,
@@ -68,7 +73,6 @@ class SearchContacts extends React.Component {
                     highlightedIndex={highlightedIndex}
                     downshiftGetMenuProps={getMenuProps}
                     downshiftGetItemProps={getItemProps}
-                    onSelectSearchItem={onSelectSearchItem}
                   />
                 )}
             </div>
@@ -87,6 +91,7 @@ const mapReduxStateToProps = state => ({
   phrase: state.addressBook.search.phrase,
   matchingContacts: state.addressBook.search.matchingContacts,
   hasFailedToSearch: state.addressBook.search.searchFailure,
+  selectedContact:  state.addressBook.contacts.fetchedContact
 });
 
 const mapReduxDispatchToProps = dispatch => ({

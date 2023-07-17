@@ -19,6 +19,10 @@ const renderSearchContacts = (reduxStateOverrides) => {
         searchFailure: false,
         ...reduxStateOverrides,
       },
+      contacts: {
+        fetchedContact: null,
+        fetchFailure: false
+      }
     },
   });
   return mount(
